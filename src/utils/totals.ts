@@ -1,13 +1,13 @@
+export type Scope = {
+    name: string;
+    items: Item[];
+};
+
 export type Item = {
     title: string;
     cost: number;
     amount: number;
     unit: string;
-};
-
-export type Scope = {
-    name: string;
-    items: Item[];
 };
 
 export const calculateItemTotal = (item: Item): number => {
@@ -24,11 +24,15 @@ export const calculateGrandTotal = (scopes: Scope[]): number => {
     return scopes.reduce((sum, scope) => sum + calculateScopeTotal(scope), 0);
 };
 
-export const formatCurrency = (value: number): string => {
+export const formatCurrency = (
+    value: number,
+    locale: string = "en-US",
+    currency: string = "USD",
+): string => {
     const safe = Number.isFinite(value) ? value : 0;
-    return new Intl.NumberFormat("en-EN", {
+    return new Intl.NumberFormat(locale, {
         style: "currency",
-        currency: "USD",
+        currency,
         maximumFractionDigits: 2,
     }).format(safe);
 };

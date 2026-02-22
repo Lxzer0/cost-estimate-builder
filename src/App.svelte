@@ -8,29 +8,50 @@
     } from "./utils/totals";
     import { loadScopes, saveScopes } from "./utils/storage";
     import { exportEstimatePdf } from "./utils/pdfExport";
+    import {
+        getTranslations,
+        getLocaleCurrency,
+        getLocaleUnits,
+        type SupportedLocale,
+    } from "./utils/i18n";
 
     import Selector from "./components/Selector.svelte";
     import Input from "./components/Input.svelte";
     import ScopeSection from "./components/ScopeSection.svelte";
 
-    type entryType = "Item" | "Scope";
+    let locale: SupportedLocale = $state("en-US");
+    let localeOptions: SupportedLocale[] = $state(["en-US", "pl-PL"]);
 
-    let estimateTitle = "";
-    let titleInput = "";
-    let entryType: entryType = "Item";
-    let scopeInput = "General";
-    let costInput = "";
-    let amountInput = "";
-    let unitInput = "";
-    let unitOptions = ["piece", "set", "unit", "box", "pack", "m²", "m", "l"];
+    let t = $derived(getTranslations(locale));
+    let currency = $derived(getLocaleCurrency(locale));
+    let unitOptions = $derived(getLocaleUnits(locale));
+    let scopes: Scope[] = $state(loadScopes());
+    let scopeOptions: string[] = $state([]);
 
-    let scopesValue: Scope[] = loadScopes();
-    let scopeOptions: string[] = [];
+    let entryType = $state<"item" | "scope">("item");
+    let entryTypeLabel = $derived(entryType === "item" ? t.item : t.scope);
 
-    $: saveScopes(scopesValue);
-    $: scopeOptions = scopesValue
-        .map((scope) => scope.name)
-        .filter((name) => name.toLowerCase() !== "general");
+    let estimateTitle = $state("");
+    let titleInput = $state("");
+    let scopeInput = $derived(t.defaultScope);
+    let costInput = $state("");
+    let amountInput = $state("");
+    let unitInput = $state("");
+
+    let titleSuggestions = $derived(
+        defaults.map((item) => capitalize(item.title)),
+    );
+    let grandTotal = $derived(calculateGrandTotal(scopes));
+    let disabled = $derived(entryType === "scope");
+
+    $effect(() => saveScopes(scopes));
+    $effect(() => {
+        scopeOptions = scopes
+            .map((scope) => scope.name)
+            .filter(
+                (name) => name.toLowerCase() !== t.defaultScope.toLowerCase(),
+            );
+    });
 
     const parseNumber = (value: string) => {
         const parsed = Number(value);
@@ -39,17 +60,17 @@
 
     const addEntry = () => {
         const title = titleInput.trim();
-        const scopeName = entryType === "Scope" ? title : scopeInput.trim();
+        const scopeName = entryType === "scope" ? title : scopeInput.trim();
         const scopeKey = scopeName.toLowerCase();
 
         if (!scopeName) return;
 
-        if (entryType === "Scope") {
-            const alreadyExists = scopesValue.some(
+        if (entryType === "scope") {
+            const alreadyExists = scopes.some(
                 (scope) => scope.name.toLowerCase() === scopeKey,
             );
             if (!alreadyExists) {
-                scopesValue = [...scopesValue, { name: scopeName, items: [] }];
+                scopes = [...scopes, { name: scopeName, items: [] }];
                 titleInput = "";
             }
             return;
@@ -61,15 +82,15 @@
         if (!title && !amountInput && !costInput) return;
 
         const item = { title, amount, cost, unit: unitInput.trim() };
-        const scopeIndex = scopesValue.findIndex(
+        const scopeIndex = scopes.findIndex(
             (scope) => scope.name.toLowerCase() === scopeKey,
         );
 
         if (scopeIndex === -1) {
-            scopesValue = [...scopesValue, { name: scopeName, items: [item] }];
+            scopes = [...scopes, { name: scopeName, items: [item] }];
         } else {
-            const scope = scopesValue[scopeIndex];
-            scopesValue = scopesValue.map((current, index) =>
+            const scope = scopes[scopeIndex];
+            scopes = scopes.map((current, index) =>
                 index === scopeIndex
                     ? { ...scope, items: [...scope.items, item] }
                     : current,
@@ -83,11 +104,11 @@
     };
 
     const removeSection = (sectionIndex: number) => {
-        scopesValue = scopesValue.filter((_, index) => index !== sectionIndex);
+        scopes = scopes.filter((_, index) => index !== sectionIndex);
     };
 
     const removeItem = (sectionIndex: number, itemIndex: number) => {
-        scopesValue = scopesValue.map((section, index) => {
+        scopes = scopes.map((section, index) => {
             if (index !== sectionIndex) {
                 return section;
             }
@@ -100,15 +121,14 @@
         });
     };
 
-    const handleExport = () => {
-        exportEstimatePdf(scopesValue, {
+    const handleExport = async () => {
+        await exportEstimatePdf(scopes, {
             title: estimateTitle.trim(),
+            locale,
+            currency,
+            t,
         });
     };
-
-    $: titleSuggestions = defaults.map((item) => capitalize(item.title));
-    $: grandTotal = calculateGrandTotal(scopesValue);
-    $: disabled = entryType === "Scope";
 </script>
 
 <svelte:head>
@@ -118,53 +138,66 @@
 <main class="min-h-screen min-w-screen bg-stone-950">
     <div class="mx-auto flex max-w-3xl flex-col gap-6 p-6">
         <section class="rounded-xl border border-stone-800 bg-stone-900/50 p-4">
-            <div class="uppercase text-sm text-rose-400 tracking-wide">
-                Title
+            <div class="flex justify-between">
+                <div class="uppercase text-sm text-rose-400 tracking-wide">
+                    {t.title}
+                </div>
+                <Selector
+                    id="language"
+                    bind:value={locale}
+                    options={localeOptions}
+                />
             </div>
             <Input
                 className="mt-2"
                 id="estimate-title"
                 bind:value={estimateTitle}
-                placeholder="Cost Estimate"
+                placeholder={t.titlePlaceholder}
             />
         </section>
 
         <section class="rounded-xl border border-stone-800 bg-stone-900/50 p-4">
             <div class="uppercase text-sm text-rose-400 tracking-wide">
-                New entry
+                {t.newEntry}
             </div>
 
             <div class="grid gap-2 md:grid-cols-9 my-4">
                 <Input
                     className="md:col-span-5"
                     id="item-title"
-                    label={entryType}
+                    label={entryTypeLabel}
                     bind:value={titleInput}
-                    placeholder={`${entryType} name`}
+                    placeholder={t.itemNamePlaceholder.replace(
+                        "{entryType}",
+                        entryTypeLabel,
+                    )}
                     suggestions={titleSuggestions}
                 />
 
                 <Selector
                     className="md:col-span-2"
                     id="entry-type"
-                    label="Type"
+                    label={t.type}
                     bind:value={entryType}
-                    options={["Item", "Scope"]}
+                    options={[
+                        { value: "item", label: t.item },
+                        { value: "scope", label: t.scope },
+                    ]}
                 />
 
                 <Selector
                     className="md:col-span-2"
                     id="scope-name"
-                    label="Scope"
+                    label={t.scope}
                     bind:value={scopeInput}
-                    options={["General", ...scopeOptions]}
+                    options={[t.defaultScope, ...scopeOptions]}
                     {disabled}
                 />
 
                 <Input
                     className="md:col-span-3"
                     id="cost-input"
-                    label="Cost"
+                    label={t.cost}
                     type="number"
                     bind:value={costInput}
                     placeholder="0"
@@ -174,7 +207,7 @@
                 <Input
                     className="md:col-span-3"
                     id="amount-input"
-                    label="Amount"
+                    label={t.amount}
                     type="number"
                     bind:value={amountInput}
                     placeholder="0"
@@ -184,7 +217,7 @@
                 <Selector
                     className="md:col-span-3"
                     id="unit-input"
-                    label="Unit"
+                    label={t.unit}
                     bind:value={unitInput}
                     options={unitOptions}
                     {disabled}
@@ -192,50 +225,53 @@
             </div>
 
             <button
-                on:click={addEntry}
+                onclick={addEntry}
                 class="inline-flex items-center justify-center rounded-md border border-stone-700/80 bg-stone-800 px-3 py-1.5 text-sm font-medium text-rose-100 transition
                 hover:bg-stone-700/60 focus:outline-none focus:ring-1 focus:ring-rose-400
                 disabled:cursor-not-allowed disabled:opacity-60"
             >
-                Add
+                {t.add}
             </button>
         </section>
 
         <section class="rounded-xl border border-stone-800 bg-stone-900/50 p-4">
             <div class="flex items-start justify-between">
                 <div class="uppercase text-sm text-rose-400 tracking-wide">
-                    Preview
+                    {t.preview}
                 </div>
                 <button
-                    on:click={handleExport}
-                    disabled={scopesValue.length === 0}
+                    onclick={handleExport}
+                    disabled={scopes.length === 0}
                     class="inline-flex items-center justify-center rounded-md border border-stone-700/80 bg-stone-800 px-3 py-1.5 text-sm font-medium text-rose-100 transition
                     hover:bg-stone-700/60 focus:outline-none focus:ring-1 focus:ring-rose-400
                     disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                    Export PDF
+                    {t.exportPdf}
                 </button>
             </div>
 
-            {#if scopesValue.length === 0}
+            {#if scopes.length === 0}
                 <div class="my-4 text-sm text-stone-400">
-                    Add items and scopes to build your cost estimate.
+                    {t.emptyState}
                 </div>
             {:else}
                 <div class="my-4 flex flex-col gap-4">
-                    {#each scopesValue as scope, scopeIndex (scopeIndex)}
+                    {#each scopes as scope, scopeIndex (scopeIndex)}
                         <ScopeSection
                             {scope}
                             {scopeIndex}
+                            {locale}
+                            {currency}
+                            {t}
                             onRemoveSection={removeSection}
                             onRemoveItem={removeItem}
                         />
                     {/each}
                 </div>
                 <div class="flex gap-2 justify-end items-baseline">
-                    <div class="text-stone-400 text-sm">Grand total</div>
+                    <div class="text-stone-400 text-sm">{t.grandTotal}</div>
                     <div class="text-stone-300">
-                        {formatCurrency(grandTotal)}
+                        {formatCurrency(grandTotal, locale, currency)}
                     </div>
                 </div>
             {/if}
