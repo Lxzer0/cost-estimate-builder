@@ -1,12 +1,12 @@
 import jsPDF from "jspdf";
 import autoTable, { type RowInput } from "jspdf-autotable";
-import type { Scope } from "./totals";
+import type { Scope } from "@/utils/totals";
 import {
     calculateItemTotal,
     calculateScopeTotal,
     calculateGrandTotal,
     formatCurrency,
-} from "./totals";
+} from "@/utils/totals";
 import {
     getLocaleCurrency,
     getTranslations,

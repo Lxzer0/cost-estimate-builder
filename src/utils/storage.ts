@@ -1,4 +1,4 @@
-import type { Scope } from "./totals";
+import type { Scope } from "@/utils/totals";
 
 const STORAGE_KEY = "cost-estimate-builder:scopes";
 

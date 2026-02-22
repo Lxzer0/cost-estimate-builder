@@ -1,23 +1,21 @@
 <script lang="ts">
-    import defaults from "./assets/defaults.json";
     import {
         calculateGrandTotal,
         formatCurrency,
-        capitalize,
         type Scope,
-    } from "./utils/totals";
-    import { loadScopes, saveScopes } from "./utils/storage";
-    import { exportEstimatePdf } from "./utils/pdfExport";
+    } from "@/utils/totals";
+    import { loadScopes, saveScopes } from "@/utils/storage";
+    import { exportEstimatePdf } from "@/utils/pdfExport";
     import {
         getTranslations,
         getLocaleCurrency,
         getLocaleUnits,
         type SupportedLocale,
-    } from "./utils/i18n";
+    } from "@/utils/i18n";
 
-    import Selector from "./components/Selector.svelte";
-    import Input from "./components/Input.svelte";
-    import ScopeSection from "./components/ScopeSection.svelte";
+    import Selector from "@/components/Selector.svelte";
+    import Input from "@/components/Input.svelte";
+    import ScopeSection from "@/components/ScopeSection.svelte";
 
     let locale: SupportedLocale = $state("en-US");
     let localeOptions: SupportedLocale[] = $state(["en-US", "pl-PL"]);
