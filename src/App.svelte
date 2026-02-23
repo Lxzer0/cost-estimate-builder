@@ -1,4 +1,5 @@
 <script lang="ts">
+    import suggestions from "@/assets/suggestions.json" with { type: "json" };
     import {
         calculateGrandTotal,
         formatCurrency,
@@ -10,6 +11,8 @@
         getTranslations,
         getLocaleCurrency,
         getLocaleUnits,
+        normalizeUnitKey,
+        type UnitKey,
         type SupportedLocale,
     } from "@/utils/i18n";
 
@@ -23,7 +26,15 @@
     let t = $derived(getTranslations(locale));
     let currency = $derived(getLocaleCurrency(locale));
     let unitOptions = $derived(getLocaleUnits(locale));
-    let scopes: Scope[] = $state(loadScopes());
+    const normalizeScopesUnits = (storedScopes: Scope[]): Scope[] =>
+        storedScopes.map((scope) => ({
+            ...scope,
+            items: scope.items.map((item) => ({
+                ...item,
+                unit: normalizeUnitKey(item.unit) || item.unit,
+            })),
+        }));
+    let scopes: Scope[] = $state(normalizeScopesUnits(loadScopes()));
     let scopeOptions: string[] = $state([]);
 
     let entryType = $state<"item" | "scope">("item");
@@ -34,13 +45,31 @@
     let scopeInput = $derived(t.defaultScope);
     let costInput = $state("");
     let amountInput = $state("");
-    let unitInput = $state("");
+    let unitInput = $state<UnitKey | "">("");
 
-    let titleSuggestions = $derived(
-        defaults.map((item) => capitalize(item.title)),
-    );
     let grandTotal = $derived(calculateGrandTotal(scopes));
     let disabled = $derived(entryType === "scope");
+
+    type ItemsMap = Record<string, Item>;
+    type Item = {
+        price?: number;
+        unit?: UnitKey | string;
+    };
+
+    let suggestionScopes = $derived(suggestions.scopes);
+    let suggestionItems = $derived(suggestions.items as ItemsMap);
+    let suggestionKeys = $derived(Object.keys(suggestionItems));
+    let selectedItem = $derived(suggestionItems[titleInput]);
+
+    $effect(() => {
+        if (!selectedItem) {
+            costInput = "";
+            unitInput = "";
+            return;
+        }
+        costInput = selectedItem?.price?.toString() ?? "";
+        unitInput = normalizeUnitKey(selectedItem?.unit);
+    });
 
     $effect(() => saveScopes(scopes));
     $effect(() => {
@@ -79,7 +108,7 @@
 
         if (!title && !amountInput && !costInput) return;
 
-        const item = { title, amount, cost, unit: unitInput.trim() };
+        const item = { title, amount, cost, unit: unitInput };
         const scopeIndex = scopes.findIndex(
             (scope) => scope.name.toLowerCase() === scopeKey,
         );
@@ -133,7 +162,7 @@
     <title>Cost Estimate Builder</title>
 </svelte:head>
 
-<main class="min-h-screen min-w-screen bg-stone-950">
+<main class="min-h-screen max-w-screen bg-stone-950">
     <div class="mx-auto flex max-w-3xl flex-col gap-6 p-6">
         <section class="rounded-xl border border-stone-800 bg-stone-900/50 p-4">
             <div class="flex justify-between">
@@ -169,7 +198,9 @@
                         "{entryType}",
                         entryTypeLabel,
                     )}
-                    suggestions={titleSuggestions}
+                    suggestions={entryType == "item"
+                        ? suggestionKeys
+                        : suggestionScopes}
                 />
 
                 <Selector

@@ -2,7 +2,24 @@ export type SupportedLocale = "en-US" | "pl-PL";
 
 export type CurrencyCode = "USD" | "PLN";
 
-export type TranslationKey =
+export type UnitKey =
+    | "pcs"
+    | "set"
+    | "unit"
+    | "box"
+    | "pack"
+    | "m2"
+    | "mb"
+    | "kg"
+    | "l"
+    | "point";
+
+type UnitOption = {
+    value: UnitKey;
+    label: string;
+};
+
+type TranslationKey =
     | "actions"
     | "add"
     | "amount"
@@ -90,9 +107,44 @@ export const currencies: Record<SupportedLocale, CurrencyCode> = {
     "pl-PL": "PLN",
 };
 
-export const units: Record<SupportedLocale, string[]> = {
-    "en-US": ["piece", "set", "unit", "box", "pack", "m²", "m", "kg", "l"],
-    "pl-PL": ["szt.", "kpl.", "jedn.", "op.", "pacz.", "m²", "m.b.", "kg", "l"],
+const unitKeys = [
+    "pcs",
+    "set",
+    "unit",
+    "box",
+    "pack",
+    "m2",
+    "mb",
+    "kg",
+    "l",
+    "point",
+] as const satisfies readonly UnitKey[];
+
+const unitLabels: Record<SupportedLocale, Record<UnitKey, string>> = {
+    "en-US": {
+        pcs: "piece",
+        set: "set",
+        unit: "unit",
+        box: "box",
+        pack: "pack",
+        m2: "m²",
+        mb: "m",
+        kg: "kg",
+        l: "l",
+        point: "pt",
+    },
+    "pl-PL": {
+        pcs: "szt.",
+        set: "kpl.",
+        unit: "jedn.",
+        box: "op.",
+        pack: "pacz.",
+        m2: "m²",
+        mb: "m.b.",
+        kg: "kg",
+        l: "l",
+        point: "pkt.",
+    },
 };
 
 export const getTranslations = (locale: SupportedLocale): Translations =>
@@ -101,5 +153,31 @@ export const getTranslations = (locale: SupportedLocale): Translations =>
 export const getLocaleCurrency = (locale: SupportedLocale): CurrencyCode =>
     currencies[locale];
 
-export const getLocaleUnits = (locale: SupportedLocale): string[] =>
-    units[locale];
+export const getLocaleUnits = (locale: SupportedLocale): UnitOption[] =>
+    unitKeys.map((value) => ({
+        value,
+        label: unitLabels[locale][value],
+    }));
+
+export const formatUnitLabel = (
+    unit: string,
+    locale: SupportedLocale,
+): string => {
+    const normalized = normalizeUnitKey(unit);
+    if (!normalized) return unit;
+
+    return unitLabels[locale][normalized];
+};
+
+export const normalizeUnitKey = (unit?: string): UnitKey | "" => {
+    if (!unit) return "";
+
+    const trimmed = unit.trim();
+    if (!trimmed) return "";
+
+    if (isUnitKey(trimmed)) return trimmed;
+    return "";
+};
+
+const isUnitKey = (value: string): value is UnitKey =>
+    unitKeys.includes(value as UnitKey);

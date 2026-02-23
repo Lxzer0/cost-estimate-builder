@@ -11,6 +11,7 @@
         CurrencyCode,
         Translations,
     } from "../utils/i18n";
+    import { formatUnitLabel } from "../utils/i18n";
 
     export let scope: Scope;
     export let scopeIndex: number;
@@ -57,7 +58,11 @@
                                 {item.title || t.untitledItem}
                             </td>
                             <td class="px-3 text-right">{item.amount}</td>
-                            <td class="px-3">{item.unit || "-"}</td>
+                            <td class="px-3">
+                                {item.unit
+                                    ? formatUnitLabel(item.unit, locale)
+                                    : "-"}
+                            </td>
                             <td class="px-3">
                                 {formatCurrency(item.cost, locale, currency)}
                             </td>

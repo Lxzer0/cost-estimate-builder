@@ -10,6 +10,7 @@ import {
 import {
     getLocaleCurrency,
     getTranslations,
+    formatUnitLabel,
     type SupportedLocale,
     type CurrencyCode,
     type Translations,
@@ -37,7 +38,7 @@ const buildItemRow = (
     currency: CurrencyCode,
 ): RowInput => [
     item.title,
-    `${item.amount.toString()} ${item.unit}`,
+    `${item.amount.toString()} ${formatUnitLabel(item.unit, locale)}`,
     formatCurrency(item.cost, locale, currency),
     formatCurrency(calculateItemTotal(item), locale, currency),
 ];
