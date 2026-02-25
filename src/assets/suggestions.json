@@ -1,79 +1,269 @@
 {
     "items": {
-        "Akrylowanie": { "price": 10, "unit": "mb" },
-        "Akrylowanie dookoła drzwi": { "price": 10, "unit": "mb" },
-        "Akrylowanie listwy": { "price": 10, "unit": "mb" },
+        "Akrylowanie": {
+            "price": 10,
+            "unit": "mb"
+        },
+        "Akrylowanie dookoła drzwi": {
+            "price": 10,
+            "unit": "mb"
+        },
+        "Akrylowanie listwy": {
+            "price": 10,
+            "unit": "mb"
+        },
         "Bruzda z zaróbką": {},
-        "Bruzdowanie": { "price": 60, "unit": "mb" },
-        "Cokolik wkuwany": { "price": 120, "unit": "mb" },
-        "Demontaż baterii podtynkowej": { "price": 150, "unit": "pcs" },
-        "Demontaż brodzika": { "price": 150, "unit": "pcs" },
-        "Demontaż farby z sufitu": { "price": 35, "unit": "m2" },
-        "Demontaż gniazdek": { "price": 10, "unit": "pcs" },
-        "Demontaż grzejnika": { "price": 80, "unit": "pcs" },
-        "Demontaż lampek": { "price": 30, "unit": "pcs" },
-        "Demontaż miski WC": { "price": 60, "unit": "pcs" },
-        "Demontaż płytek": { "price": 60, "unit": "m2" },
-        "Demontaż płytek oraz kleju": { "price": 80, "unit": "m2" },
-        "Demontaż posadzki": { "price": 30, "unit": "m2" },
-        "Demontaż ścianki": { "price": 80, "unit": "m2" },
-        "Demontaż szafek": { "price": 30, "unit": "pcs" },
+        "Bruzdowanie": {
+            "price": 60,
+            "unit": "mb"
+        },
+        "Cokolik wkuwany": {
+            "price": 120,
+            "unit": "mb"
+        },
+        "Demontaż baterii podtynkowej": {
+            "price": 150,
+            "unit": "pcs"
+        },
+        "Demontaż brodzika": {
+            "price": 150,
+            "unit": "pcs"
+        },
+        "Demontaż farby z sufitu": {
+            "price": 35,
+            "unit": "m2"
+        },
+        "Demontaż gniazdek": {
+            "price": 10,
+            "unit": "pcs"
+        },
+        "Demontaż grzejnika": {
+            "price": 80,
+            "unit": "pcs"
+        },
+        "Demontaż lampek": {
+            "price": 30,
+            "unit": "pcs"
+        },
+        "Demontaż miski WC": {
+            "price": 60,
+            "unit": "pcs"
+        },
+        "Demontaż płytek": {
+            "price": 60,
+            "unit": "m2"
+        },
+        "Demontaż płytek oraz kleju": {
+            "price": 80,
+            "unit": "m2"
+        },
+        "Demontaż posadzki": {
+            "price": 30,
+            "unit": "m2"
+        },
+        "Demontaż ścianki": {
+            "price": 80,
+            "unit": "m2"
+        },
+        "Demontaż szafek": {
+            "price": 30,
+            "unit": "pcs"
+        },
         "Demontaż szyby": {},
-        "Demontaż umywalki": { "price": 50, "unit": "pcs" },
-        "Demontaż wanny": { "price": 150, "unit": "pcs" },
-        "Demontaż zabudowy „Geberit”": { "price": 150, "unit": "pcs" },
-        "Demontaż/montaż grzejnika": { "price": 350, "unit": "pcs" },
-        "Demontaż/montaż lampek": { "price": 90, "unit": "pcs" },
+        "Demontaż umywalki": {
+            "price": 50,
+            "unit": "pcs"
+        },
+        "Demontaż wanny": {
+            "price": 150,
+            "unit": "pcs"
+        },
+        "Demontaż zabudowy „Geberit”": {
+            "price": 150,
+            "unit": "pcs"
+        },
+        "Demontaż/montaż grzejnika": {
+            "price": 350,
+            "unit": "pcs"
+        },
+        "Demontaż/montaż lampek": {
+            "price": 90,
+            "unit": "pcs"
+        },
         "Demontaż/montaż plastików z gniazdek, włączników": {
             "price": 10,
             "unit": "pcs"
         },
-        "Demontaż/montaż zaworków": { "price": 55, "unit": "pcs" },
-        "Doprowadzenie rury kanalizacyjnej": { "price": 120, "unit": "point" },
-        "Doprowadzenie wody do pralki": { "price": 250, "unit": "point" },
-        "Gładzie": { "price": 55, "unit": "m2" },
-        "Gruntowanie": { "price": 10, "unit": "m2" },
-        "Hydroizolacja": { "price": 45, "unit": "m2" },
+        "Demontaż/montaż zaworków": {
+            "price": 55,
+            "unit": "pcs"
+        },
+        "Doprowadzenie rury kanalizacyjnej": {
+            "price": 120,
+            "unit": "point"
+        },
+        "Doprowadzenie wody do pralki": {
+            "price": 250,
+            "unit": "point"
+        },
+        "Gładzie": {
+            "price": 55,
+            "unit": "m2"
+        },
+        "Gruntowanie": {
+            "price": 10,
+            "unit": "m2"
+        },
+        "Hydroizolacja": {
+            "price": 45,
+            "unit": "m2"
+        },
         "Kupowanie, dostawa i rozładowanie materiałów": {},
         "Kupowanie, dostawa materiałów": {},
-        "Klejenie listwy drzwiowej": { "price": 35, "unit": "mb" },
-        "Ładowanie kontera na gruz": { "price": 600 },
-        "Ładowanie worku": { "price": 300 },
-        "Malowanie": { "price": 30, "unit": "m2" },
-        "Montaż baterii prysznicowej": { "price": 160, "unit": "pcs" },
-        "Montaż baterii umywalkowej": { "price": 80, "unit": "pcs" },
-        "Montaż gniazdka": { "price": 35, "unit": "pcs" },
-        "Montaż lampki": { "price": 60, "unit": "pcs" },
-        "Montaż lustra": { "price": 120, "unit": "pcs" },
-        "Montaż miski WC": { "price": 150, "unit": "pcs" },
-        "Montaż puszki pod gniazdko": { "price": 40, "unit": "pcs" },
-        "Montaż syfonu": { "price": 40, "unit": "pcs" },
-        "Montaż szafki": { "price": 70, "unit": "pcs" },
-        "Montaż szafki pod umywalkę": { "price": 120, "unit": "pcs" },
-        "Montaż umywalki": { "price": 120, "unit": "pcs" },
-        "Montaż wanny": { "price": 350, "unit": "pcs" },
-        "Montaż, składanie szafki": { "price": 180, "unit": "pcs" },
-        "Montaż listwy przypodłogowej": { "price": 45, "unit": "mb" },
-        "Naprawa pęknięć": { "price": 60, "unit": "mb" },
-        "Obróbka glifu": { "price": 120, "unit": "mb" },
-        "Obsadzenie narożników": { "price": 20, "unit": "mb" },
-        "Otwory w płytkach": { "price": 60, "unit": "pcs" },
-        "Poprawki": { "price": 15, "unit": "m2" },
-        "Posadzka w prysznicu": { "price": 100, "unit": "pcs" },
+        "Klejenie listwy drzwiowej": {
+            "price": 35,
+            "unit": "mb"
+        },
+        "Ładowanie kontera na gruz": {
+            "price": 600
+        },
+        "Ładowanie worku": {
+            "price": 300
+        },
+        "Malowanie": {
+            "price": 30,
+            "unit": "m2"
+        },
+        "Montaż baterii prysznicowej": {
+            "price": 160,
+            "unit": "pcs"
+        },
+        "Montaż baterii umywalkowej": {
+            "price": 80,
+            "unit": "pcs"
+        },
+        "Montaż gniazdka": {
+            "price": 35,
+            "unit": "pcs"
+        },
+        "Montaż lampki": {
+            "price": 60,
+            "unit": "pcs"
+        },
+        "Montaż lustra": {
+            "price": 120,
+            "unit": "pcs"
+        },
+        "Montaż miski WC": {
+            "price": 150,
+            "unit": "pcs"
+        },
+        "Montaż puszki pod gniazdko": {
+            "price": 40,
+            "unit": "pcs"
+        },
+        "Montaż syfonu": {
+            "price": 40,
+            "unit": "pcs"
+        },
+        "Montaż szafki": {
+            "price": 70,
+            "unit": "pcs"
+        },
+        "Montaż szafki pod umywalkę": {
+            "price": 120,
+            "unit": "pcs"
+        },
+        "Montaż umywalki": {
+            "price": 120,
+            "unit": "pcs"
+        },
+        "Montaż wanny": {
+            "price": 350,
+            "unit": "pcs"
+        },
+        "Montaż, składanie szafki": {
+            "price": 180,
+            "unit": "pcs"
+        },
+        "Montaż listwy przypodłogowej": {
+            "price": 45,
+            "unit": "mb"
+        },
+        "Naprawa pęknięć": {
+            "price": 60,
+            "unit": "mb"
+        },
+        "Obróbka glifu": {
+            "price": 120,
+            "unit": "mb"
+        },
+        "Obsadzenie narożników": {
+            "price": 20,
+            "unit": "mb"
+        },
+        "Otwory w płytkach": {
+            "price": 60,
+            "unit": "pcs"
+        },
+        "Poprawki": {
+            "price": 15,
+            "unit": "m2"
+        },
+        "Posadzka w prysznicu": {
+            "price": 100,
+            "unit": "pcs"
+        },
         "Przeniesienie punktu": {},
         "Przenoszenie mebli": {},
-        "Przygotowanie": { "price": 10, "unit": "m2" },
-        "Silikonowanie": { "price": 15, "unit": "m2" },
-        "Szlifowanie pod kąt 45°": { "price": 150, "unit": "mb" },
-        "Tynkowanie": { "price": 60, "unit": "m2" },
-        "Układanie płytek": { "price": 200, "unit": "m2" },
-        "Wylewka samopoziomująca": { "price": 50, "unit": "m2" },
-        "Zabezpieczenie": { "price": 15, "unit": "m2" },
-        "Zabezpieczenie podłogi": { "price": 10, "unit": "m2" },
-        "Zabezpieczenie szafek, mebli": { "price": 10, "unit": "m2" },
-        "Zabudowa „Geberit”": { "price": 250, "unit": "pcs" },
-        "Zabudowa wanny": { "price": 400, "unit": "pcs" },
-        "Zeskrobanie farby ze ścian": { "price": 30, "unit": "m2" }
+        "Przygotowanie": {
+            "price": 10,
+            "unit": "m2"
+        },
+        "Silikonowanie": {
+            "price": 15,
+            "unit": "m2"
+        },
+        "Szlifowanie pod kąt 45°": {
+            "price": 150,
+            "unit": "mb"
+        },
+        "Tynkowanie": {
+            "price": 60,
+            "unit": "m2"
+        },
+        "Układanie płytek": {
+            "price": 200,
+            "unit": "m2"
+        },
+        "Wylewka samopoziomująca": {
+            "price": 50,
+            "unit": "m2"
+        },
+        "Zabezpieczenie": {
+            "price": 15,
+            "unit": "m2"
+        },
+        "Zabezpieczenie podłogi": {
+            "price": 10,
+            "unit": "m2"
+        },
+        "Zabezpieczenie szafek, mebli": {
+            "price": 10,
+            "unit": "m2"
+        },
+        "Zabudowa „Geberit”": {
+            "price": 250,
+            "unit": "pcs"
+        },
+        "Zabudowa wanny": {
+            "price": 400,
+            "unit": "pcs"
+        },
+        "Zeskrobanie farby ze ścian": {
+            "price": 30,
+            "unit": "m2"
+        }
     },
     "scopes": [
         "Biały montaż",
