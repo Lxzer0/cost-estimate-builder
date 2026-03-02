@@ -21,7 +21,13 @@
     import ScopeSection from "@/components/ScopeSection.svelte";
 
     let locale: SupportedLocale = $state("en-US");
-    let localeOptions: SupportedLocale[] = $state(["en-US", "pl-PL"]);
+    let localeOptions = $state<SupportedLocale[]>([
+        "en-US",
+        "pl-PL",
+        "ru-RU",
+        "be-BY",
+        "uk-UA",
+    ]);
 
     let t = $derived(getTranslations(locale));
     let currency = $derived(getLocaleCurrency(locale));
