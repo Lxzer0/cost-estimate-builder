@@ -1,6 +1,9 @@
-export type SupportedLocale = "en-US" | "pl-PL";
+import { global } from "@/assets/i18n/global.json" with { type: "json" };
+import { units } from "@/assets/i18n/units.json" with { type: "json" };
 
-export type CurrencyCode = "USD" | "PLN";
+export type SupportedLocale = "en-US" | "pl-PL" | "ru-RU" | "be-BY" | "uk-UA";
+
+export type CurrencyCode = "USD" | "PLN" | "RUB" | "BYN" | "UAH";
 
 export type UnitKey =
     | "pcs"
@@ -36,7 +39,7 @@ type TranslationKey =
     | "remove"
     | "removeScope"
     | "scope"
-    | "scopeLabel"
+    | "scopeNamePlaceholder"
     | "subtotal"
     | "title"
     | "titlePlaceholder"
@@ -47,64 +50,14 @@ type TranslationKey =
 
 export type Translations = Record<TranslationKey, string>;
 
-export const translations: Record<SupportedLocale, Translations> = {
-    "en-US": {
-        actions: "Actions",
-        add: "Add",
-        amount: "Amount",
-        cost: "Cost",
-        defaultScope: "General",
-        emptyState: "Add items and scopes to build your cost estimate.",
-        exportPdf: "Export PDF",
-        grandTotal: "Grand total",
-        item: "Item",
-        itemNamePlaceholder: "{entryType} name",
-        newEntry: "New entry",
-        noItems: "No items yet.",
-        preview: "Preview",
-        remove: "Remove",
-        removeScope: "Remove scope",
-        scope: "Scope",
-        scopeLabel: "Scope",
-        subtotal: "Subtotal",
-        title: "Title",
-        titlePlaceholder: "Cost Estimate",
-        total: "Total",
-        type: "Type",
-        unit: "Unit",
-        untitledItem: "Untitled item",
-    },
-    "pl-PL": {
-        actions: "Akcje",
-        add: "Dodaj",
-        amount: "Ilość",
-        cost: "Cena",
-        defaultScope: "Ogólne",
-        emptyState: "Dodawaj wpisy i zakresy aby utworzyć kosztorys.",
-        exportPdf: "Eksportuj PDF",
-        grandTotal: "Suma końcowa",
-        item: "Wpis",
-        itemNamePlaceholder: "Nazwa {entryType}u",
-        newEntry: "Nowy wpis",
-        noItems: "Brak wpisów.",
-        preview: "Podgląd",
-        remove: "Usuń",
-        removeScope: "Usuń zakres",
-        scope: "Zakres",
-        scopeLabel: "Zakres",
-        subtotal: "Suma częściowa",
-        title: "Tytuł",
-        titlePlaceholder: "Kosztorys",
-        total: "Suma",
-        type: "Typ",
-        unit: "Jednostka",
-        untitledItem: "Wpis bez nazwy",
-    },
-};
+export const translations: Record<SupportedLocale, Translations> = global;
 
 export const currencies: Record<SupportedLocale, CurrencyCode> = {
     "en-US": "USD",
     "pl-PL": "PLN",
+    "ru-RU": "RUB",
+    "be-BY": "BYN",
+    "uk-UA": "UAH",
 };
 
 const unitKeys = [
@@ -120,32 +73,7 @@ const unitKeys = [
     "point",
 ] as const satisfies readonly UnitKey[];
 
-const unitLabels: Record<SupportedLocale, Record<UnitKey, string>> = {
-    "en-US": {
-        pcs: "piece",
-        set: "set",
-        unit: "unit",
-        box: "box",
-        pack: "pack",
-        m2: "m²",
-        mb: "m",
-        kg: "kg",
-        l: "l",
-        point: "pt",
-    },
-    "pl-PL": {
-        pcs: "szt.",
-        set: "kpl.",
-        unit: "jedn.",
-        box: "op.",
-        pack: "pacz.",
-        m2: "m²",
-        mb: "m.b.",
-        kg: "kg",
-        l: "l",
-        point: "pkt.",
-    },
-};
+const unitLabels: Record<SupportedLocale, Record<UnitKey, string>> = units;
 
 export const getTranslations = (locale: SupportedLocale): Translations =>
     translations[locale];
