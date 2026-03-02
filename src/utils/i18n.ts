@@ -1,12 +1,7 @@
 import { global } from "@/assets/i18n/global.json" with { type: "json" };
 import { units } from "@/assets/i18n/units.json" with { type: "json" };
 
-export type SupportedLocale =
-    | "en-US"
-    | "pl-PL"
-    | "ru-RU"
-    | "be-BY"
-    | "uk-UA";
+export type SupportedLocale = "en-US" | "pl-PL" | "ru-RU" | "be-BY" | "uk-UA";
 
 export type CurrencyCode = "USD" | "PLN" | "RUB" | "BYN" | "UAH";
 
@@ -44,7 +39,7 @@ type TranslationKey =
     | "remove"
     | "removeScope"
     | "scope"
-    | "scopeLabel"
+    | "scopeNamePlaceholder"
     | "subtotal"
     | "title"
     | "titlePlaceholder"

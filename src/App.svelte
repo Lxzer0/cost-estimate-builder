@@ -20,7 +20,7 @@
     import Input from "@/components/Input.svelte";
     import ScopeSection from "@/components/ScopeSection.svelte";
 
-    let locale: SupportedLocale = $state("en-US");
+    let locale = $state<SupportedLocale>("en-US");
     let localeOptions = $state<SupportedLocale[]>([
         "en-US",
         "pl-PL",
@@ -200,10 +200,9 @@
                     id="item-title"
                     label={entryTypeLabel}
                     bind:value={titleInput}
-                    placeholder={t.itemNamePlaceholder.replace(
-                        "{entryType}",
-                        entryTypeLabel,
-                    )}
+                    placeholder={entryType == "item"
+                        ? t.itemNamePlaceholder
+                        : t.scopeNamePlaceholder}
                     suggestions={entryType == "item"
                         ? suggestionKeys
                         : suggestionScopes}
