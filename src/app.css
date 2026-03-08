@@ -40,6 +40,8 @@
         transparent
     );
     --color-button-text: var(--color-rose-100);
+
+    --text-xxs: 0.625rem;
 }
 
 :root[data-theme="light"] {
