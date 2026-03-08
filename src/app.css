@@ -1,6 +1,67 @@
+@config "../tailwind.config.js";
 @import "tailwindcss";
 
 :root {
     color-scheme: dark;
     font-family: "Fragment Mono", monospace;
+
+    --color-page: var(--color-stone-950);
+    --color-surface: color-mix(
+        in oklab,
+        var(--color-stone-900) 50%,
+        transparent
+    );
+    --color-surface-muted: color-mix(
+        in oklab,
+        var(--color-stone-900) 70%,
+        transparent
+    );
+    --color-border: var(--color-stone-800);
+    --color-border-button: var(--color-stone-700);
+
+    --color-text: var(--color-stone-300);
+    --color-text-muted: var(--color-stone-400);
+    --color-text-soft: var(--color-stone-500);
+    --color-text-strong: var(--color-stone-200);
+
+    --color-accent: var(--color-rose-400);
+    --color-accent-strong: var(--color-rose-200);
+
+    --color-control-bg: var(--color-stone-400);
+    --color-control-disabled-bg: color-mix(
+        in oklab,
+        var(--color-stone-400) 50%,
+        transparent
+    );
+    --color-button-bg: var(--color-stone-800);
+    --color-button-hover-bg: color-mix(
+        in oklab,
+        var(--color-stone-700) 60%,
+        transparent
+    );
+    --color-button-text: var(--color-rose-100);
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
+
+    --color-page: var(--color-stone-100);
+    --color-surface: var(--color-white);
+    --color-surface-muted: var(--color-stone-50);
+    --color-border: var(--color-stone-200);
+    --color-border-button: var(--color-stone-300);
+
+    --color-text: var(--color-stone-900);
+    --color-text-muted: var(--color-stone-700);
+    --color-text-soft: var(--color-stone-500);
+    --color-text-strong: var(--color-stone-950);
+
+    --color-accent: var(--color-rose-900);
+    --color-accent-strong: var(--color-rose-700);
+
+    --color-control-bg: var(--color-white);
+    --color-control-disabled-bg: var(--color-stone-200);
+    --color-button-bg: var(--color-stone-100);
+    --color-button-hover-bg: var(--color-stone-200);
+    --color-button-text: var(--color-rose-900);
 }

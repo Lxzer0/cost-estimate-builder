@@ -6,6 +6,7 @@
         value = $bindable(),
         options = [],
         disabled = false,
+        onchange = undefined,
     } = $props();
 
     const normalizedOptions = $derived(
@@ -19,14 +20,15 @@
 
 <div class={className}>
     {#if label}
-        <label class="text-xs text-stone-400 mb-2 block" for={id}>
+        <label class="text-xs text-text-muted mb-2 block" for={id}>
             {label}
         </label>
     {/if}
     <select
         {id}
         bind:value
-        class="border w-full pl-2 h-9 rounded-md text-stone-300 border-stone-700 focus:outline-none disabled:bg-stone-400/50"
+        class="border w-full pl-2 h-9 rounded-md text-text border-border-button focus:outline-none disabled:bg-control-disabled-bg"
+        {onchange}
         {disabled}
     >
         {#each normalizedOptions as option}

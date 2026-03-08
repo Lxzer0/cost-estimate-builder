@@ -14,7 +14,7 @@
 </script>
 
 <div class={className}>
-    <label class="text-xs text-stone-400 mb-2 block" for={id}>
+    <label class="text-xs text-text-muted mb-2 block" for={id}>
         {label}
     </label>
     <input
@@ -25,7 +25,7 @@
         min={type === "number" ? min : undefined}
         step={type === "number" ? step : undefined}
         {placeholder}
-        class="border w-full pl-2 h-9 rounded-md text-stone-300 border-stone-700 disabled:bg-stone-400/50 focus:outline-none"
+        class="border w-full pl-2 h-9 rounded-md text-text border-border-button disabled:bg-control-disabled-bg focus:outline-none"
         {disabled}
     />
     <datalist id={`${id}-suggestions`}>

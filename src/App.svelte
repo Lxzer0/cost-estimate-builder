@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import suggestions from "@/assets/suggestions.json" with { type: "json" };
     import {
         calculateGrandTotal,
@@ -6,6 +7,7 @@
         type Scope,
     } from "@/utils/totals";
     import { loadScopes, saveScopes } from "@/utils/storage";
+    import { setTheme, getTheme, type Theme } from "@/utils/theme";
     import { exportEstimatePdf } from "@/utils/pdfExport";
     import {
         getTranslations,
@@ -40,8 +42,14 @@
                 unit: normalizeUnitKey(item.unit) || item.unit,
             })),
         }));
-    let scopes: Scope[] = $state(normalizeScopesUnits(loadScopes()));
-    let scopeOptions: string[] = $state([]);
+    let scopes = $state<Scope[]>(normalizeScopesUnits(loadScopes()));
+    let scopeOptions = $state<string[]>([]);
+
+    let theme = $state<Theme>(getTheme());
+    let themeOptions = $state<{ value: Theme; label: string }[]>([
+        { value: "light", label: "Light" },
+        { value: "dark", label: "Dark" },
+    ]);
 
     let entryType = $state<"item" | "scope">("item");
     let entryTypeLabel = $derived(entryType === "item" ? t.item : t.scope);
@@ -66,6 +74,8 @@
     let suggestionItems = $derived(suggestions.items as ItemsMap);
     let suggestionKeys = $derived(Object.keys(suggestionItems));
     let selectedItem = $derived(suggestionItems[titleInput]);
+
+    onMount(() => (theme = getTheme()));
 
     $effect(() => {
         if (!selectedItem) {
@@ -168,18 +178,26 @@
     <title>Cost Estimate Builder</title>
 </svelte:head>
 
-<main class="min-h-screen max-w-screen bg-stone-950">
+<main class="min-h-screen max-w-screen bg-page">
     <div class="mx-auto flex max-w-3xl flex-col gap-6 p-6">
-        <section class="rounded-xl border border-stone-800 bg-stone-900/50 p-4">
+        <section class="rounded-xl border border-border bg-surface p-4">
             <div class="flex justify-between">
-                <div class="uppercase text-sm text-rose-400 tracking-wide">
+                <div class="uppercase text-sm text-accent tracking-wide">
                     {t.title}
                 </div>
-                <Selector
-                    id="language"
-                    bind:value={locale}
-                    options={localeOptions}
-                />
+                <div class="flex gap-2">
+                    <Selector
+                        id="theme"
+                        bind:value={theme}
+                        options={themeOptions}
+                        onchange={() => setTheme(theme)}
+                    />
+                    <Selector
+                        id="language"
+                        bind:value={locale}
+                        options={localeOptions}
+                    />
+                </div>
             </div>
             <Input
                 className="mt-2"
@@ -189,8 +207,8 @@
             />
         </section>
 
-        <section class="rounded-xl border border-stone-800 bg-stone-900/50 p-4">
-            <div class="uppercase text-sm text-rose-400 tracking-wide">
+        <section class="rounded-xl border border-border bg-surface p-4">
+            <div class="uppercase text-sm text-accent tracking-wide">
                 {t.newEntry}
             </div>
 
@@ -260,24 +278,24 @@
 
             <button
                 onclick={addEntry}
-                class="inline-flex items-center justify-center rounded-md border border-stone-700/80 bg-stone-800 px-3 py-1.5 text-sm font-medium text-rose-100 transition
-                hover:bg-stone-700/60 focus:outline-none focus:ring-1 focus:ring-rose-400
+                class="inline-flex items-center justify-center rounded-md border border-border-button bg-button-bg px-3 py-1.5 text-sm font-medium text-button-text transition
+                hover:bg-button-hover-bg focus:outline-none focus:ring-1 focus:ring-accent
                 disabled:cursor-not-allowed disabled:opacity-60"
             >
                 {t.add}
             </button>
         </section>
 
-        <section class="rounded-xl border border-stone-800 bg-stone-900/50 p-4">
+        <section class="rounded-xl border border-border bg-surface p-4">
             <div class="flex items-start justify-between">
-                <div class="uppercase text-sm text-rose-400 tracking-wide">
+                <div class="uppercase text-sm text-accent tracking-wide">
                     {t.preview}
                 </div>
                 <button
                     onclick={handleExport}
                     disabled={scopes.length === 0}
-                    class="inline-flex items-center justify-center rounded-md border border-stone-700/80 bg-stone-800 px-3 py-1.5 text-sm font-medium text-rose-100 transition
-                    hover:bg-stone-700/60 focus:outline-none focus:ring-1 focus:ring-rose-400
+                    class="inline-flex items-center justify-center rounded-md border border-border-button bg-button-bg px-3 py-1.5 text-sm font-medium text-button-text transition
+                    hover:bg-button-hover-bg focus:outline-none focus:ring-1 focus:ring-accent
                     disabled:cursor-not-allowed disabled:opacity-60"
                 >
                     {t.exportPdf}
@@ -285,7 +303,7 @@
             </div>
 
             {#if scopes.length === 0}
-                <div class="my-4 text-sm text-stone-400">
+                <div class="my-4 text-sm text-text-muted">
                     {t.emptyState}
                 </div>
             {:else}
@@ -303,8 +321,10 @@
                     {/each}
                 </div>
                 <div class="flex gap-2 justify-end items-baseline">
-                    <div class="text-stone-400 text-sm">{t.grandTotal}</div>
-                    <div class="text-stone-300">
+                    <div class="text-text-muted text-sm">
+                        {t.grandTotal}
+                    </div>
+                    <div class="text-text">
                         {formatCurrency(grandTotal, locale, currency)}
                     </div>
                 </div>
