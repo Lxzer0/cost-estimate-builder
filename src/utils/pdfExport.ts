@@ -18,7 +18,6 @@ import {
 
 type ExportOptions = {
     title?: string;
-    fileName?: string;
     locale?: SupportedLocale;
     currency?: CurrencyCode;
     t?: Translations;
@@ -127,7 +126,6 @@ export const exportEstimatePdf = async (
     doc.setFont("OpenSans", "bold");
 
     const title = options.title;
-    const fileName = options.fileName ?? "cost-estimate.pdf";
     const locale = options.locale ?? "en-US";
     const t = options.t ?? getTranslations(locale);
     const currency = options.currency ?? getLocaleCurrency(locale);
@@ -178,5 +176,5 @@ export const exportEstimatePdf = async (
         { align: "right" },
     );
 
-    doc.save(fileName);
+    doc.save(title ?? "cost-estimate.pdf");
 };

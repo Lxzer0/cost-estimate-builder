@@ -23,14 +23,14 @@
 </script>
 
 <section class="rounded-md border border-border bg-surface p-4">
-    <div class="flex items-start justify-between">
-        <div class="font-medium text-accent-strong">
+    <div class="flex items-start justify-between gap-8">
+        <div class="font-medium text-accent-strong wrap-anywhere">
             {capitalize(scope.name)}
         </div>
         <button
             type="button"
             on:click={() => onRemoveSection(scopeIndex)}
-            class="text-xs text-text-muted hover:text-text-strong"
+            class="text-xs text-text-muted hover:text-text-strong shrink-0"
         >
             {t.removeScope}
         </button>

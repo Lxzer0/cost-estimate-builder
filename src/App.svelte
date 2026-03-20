@@ -8,6 +8,7 @@
     } from "@/utils/totals";
     import { loadScopes, saveScopes } from "@/utils/storage";
     import { setTheme, getTheme, type Theme } from "@/utils/theme";
+    import { saveEstimate } from "@/utils/saveEstimate";
     import { exportEstimatePdf } from "@/utils/pdfExport";
     import {
         getTranslations,
@@ -164,6 +165,15 @@
         });
     };
 
+    const handleSaveEstimate = async () => {
+        await saveEstimate(scopes, {
+            title: estimateTitle.trim(),
+            locale,
+            currency,
+            t,
+        });
+    };
+
     const handleExport = async () => {
         await exportEstimatePdf(scopes, {
             title: estimateTitle.trim(),
@@ -291,15 +301,26 @@
                 <div class="uppercase text-sm text-accent tracking-wide">
                     {t.preview}
                 </div>
-                <button
-                    onclick={handleExport}
-                    disabled={scopes.length === 0}
-                    class="inline-flex items-center justify-center rounded-md border border-border-button bg-button-bg px-3 py-1.5 text-sm font-medium text-button-text transition
+                <div>
+                    <button
+                        onclick={handleSaveEstimate}
+                        disabled={scopes.length === 0}
+                        class="inline-flex items-center justify-center rounded-md border border-border-button bg-button-bg px-3 py-1.5 text-sm font-medium text-button-text transition
                     hover:bg-button-hover-bg focus:outline-none focus:ring-1 focus:ring-accent
                     disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                    {t.exportPdf}
-                </button>
+                    >
+                        {t.saveEstimate}
+                    </button>
+                    <button
+                        onclick={handleExport}
+                        disabled={scopes.length === 0}
+                        class="inline-flex items-center justify-center rounded-md border border-border-button bg-button-bg px-3 py-1.5 text-sm font-medium text-button-text transition
+                    hover:bg-button-hover-bg focus:outline-none focus:ring-1 focus:ring-accent
+                    disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                        {t.exportPdf}
+                    </button>
+                </div>
             </div>
 
             {#if scopes.length === 0}

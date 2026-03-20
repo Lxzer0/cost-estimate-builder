@@ -1,41 +1,46 @@
 import {
-  pgTable,
-  uuid,
-  text,
-  numeric,
-  timestamp,
-  foreignKey,
+    pgTable,
+    uuid,
+    varchar,
+    timestamp,
+    index,
+    integer,
 } from "drizzle-orm/pg-core";
 
-export const scopes = pgTable("scopes", {
-  uuid: uuid("uuid").defaultRandom().primaryKey(),
-  name: text("name").notNull(),
-  createdAt: timestamp("created_at")
-    .defaultNow()
-    .notNull(),
+export const estimate = pgTable("estimate", {
+    uuid: uuid("uuid").defaultRandom().primaryKey(),
+    title: varchar("title", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+export const scope = pgTable(
+    "scope",
+    {
+        uuid: uuid("uuid").defaultRandom().primaryKey(),
+        title: varchar("title", { length: 128 }).notNull(),
+        createdAt: timestamp("created_at").defaultNow().notNull(),
+        updatedAt: timestamp("updated_at").defaultNow().notNull(),
+        estimateUuid: uuid("estimate_uuid")
+            .references(() => estimate.uuid, { onDelete: "cascade" })
+            .notNull(),
+    },
+    (table) => [index("estimate_idx").on(table.estimateUuid)],
+);
+
 export const items = pgTable(
-  "items",
-  {
-    uuid: uuid("uuid").defaultRandom().primaryKey(),
-    scopeUuid: uuid("scope_uuid").notNull(),
-    title: text("title").notNull(),
-    amount: numeric("amount").notNull(),
-    cost: numeric("cost").notNull(),
-    unit: text("unit").notNull(),
-    createdAt: timestamp("created_at")
-      .defaultNow()
-      .notNull(),
-    updatedAt: timestamp("updated_at")
-      .defaultNow()
-      .notNull(),
-  },
-  (table) => [({
-    scopeFk: foreignKey({
-      columns: [table.scopeUuid],
-      foreignColumns: [scopes.uuid],
-      name: "items_scope_uuid_scopes_uuid_fk",
-    }),
-  })]
+    "items",
+    {
+        uuid: uuid("uuid").defaultRandom().primaryKey(),
+        title: varchar("title", { length: 256 }).notNull(),
+        amount: integer("amount").notNull(),
+        cost: integer("cost").notNull(),
+        unit: varchar("unit", { length: 32 }).notNull(),
+        createdAt: timestamp("created_at").defaultNow().notNull(),
+        updatedAt: timestamp("updated_at").defaultNow().notNull(),
+        scopeUuid: uuid("scope_uuid")
+            .references(() => scope.uuid, { onDelete: "cascade" })
+            .notNull(),
+    },
+    (table) => [index("scope_idx").on(table.scopeUuid)],
 );

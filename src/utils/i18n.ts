@@ -29,6 +29,7 @@ type TranslationKey =
     | "cost"
     | "defaultScope"
     | "emptyState"
+    | "saveEstimate"
     | "exportPdf"
     | "grandTotal"
     | "item"
