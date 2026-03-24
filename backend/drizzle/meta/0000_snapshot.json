@@ -1,11 +1,11 @@
 {
-  "id": "e753776d-8cb2-42a5-87ff-136eb66358d1",
+  "id": "e14cf7cb-b2ce-4079-84d9-00f533d30619",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.items": {
-      "name": "items",
+    "public.estimates": {
+      "name": "estimates",
       "schema": "",
       "columns": {
         "uuid": {
@@ -15,33 +15,9 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "scope_uuid": {
-          "name": "scope_uuid",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
         "title": {
           "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "amount": {
-          "name": "amount",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "cost": {
-          "name": "cost",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "unit": {
-          "name": "unit",
-          "type": "text",
+          "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true
         },
@@ -61,6 +37,86 @@
         }
       },
       "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.items": {
+      "name": "items",
+      "schema": "",
+      "columns": {
+        "uuid": {
+          "name": "uuid",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount": {
+          "name": "amount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cost": {
+          "name": "cost",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "unit": {
+          "name": "unit",
+          "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "scope_uuid": {
+          "name": "scope_uuid",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "scope_idx": {
+          "name": "scope_idx",
+          "columns": [
+            {
+              "expression": "scope_uuid",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "items_scope_uuid_scopes_uuid_fk": {
           "name": "items_scope_uuid_scopes_uuid_fk",
@@ -72,7 +128,7 @@
           "columnsTo": [
             "uuid"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -93,9 +149,9 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "name": {
-          "name": "name",
-          "type": "text",
+        "title": {
+          "name": "title",
+          "type": "varchar(128)",
           "primaryKey": false,
           "notNull": true
         },
@@ -105,10 +161,53 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "estimate_uuid": {
+          "name": "estimate_uuid",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
+      "indexes": {
+        "estimate_idx": {
+          "name": "estimate_idx",
+          "columns": [
+            {
+              "expression": "estimate_uuid",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "scopes_estimate_uuid_estimates_uuid_fk": {
+          "name": "scopes_estimate_uuid_estimates_uuid_fk",
+          "tableFrom": "scopes",
+          "tableTo": "estimates",
+          "columnsFrom": [
+            "estimate_uuid"
+          ],
+          "columnsTo": [
+            "uuid"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},

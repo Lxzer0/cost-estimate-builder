@@ -8,22 +8,22 @@ import {
     integer,
 } from "drizzle-orm/pg-core";
 
-export const estimate = pgTable("estimate", {
+export const estimates = pgTable("estimates", {
     uuid: uuid("uuid").defaultRandom().primaryKey(),
     title: varchar("title", { length: 256 }).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-export const scope = pgTable(
-    "scope",
+export const scopes = pgTable(
+    "scopes",
     {
         uuid: uuid("uuid").defaultRandom().primaryKey(),
         title: varchar("title", { length: 128 }).notNull(),
         createdAt: timestamp("created_at").defaultNow().notNull(),
         updatedAt: timestamp("updated_at").defaultNow().notNull(),
         estimateUuid: uuid("estimate_uuid")
-            .references(() => estimate.uuid, { onDelete: "cascade" })
+            .references(() => estimates.uuid, { onDelete: "cascade" })
             .notNull(),
     },
     (table) => [index("estimate_idx").on(table.estimateUuid)],
@@ -40,27 +40,27 @@ export const items = pgTable(
         createdAt: timestamp("created_at").defaultNow().notNull(),
         updatedAt: timestamp("updated_at").defaultNow().notNull(),
         scopeUuid: uuid("scope_uuid")
-            .references(() => scope.uuid, { onDelete: "cascade" })
+            .references(() => scopes.uuid, { onDelete: "cascade" })
             .notNull(),
     },
     (table) => [index("scope_idx").on(table.scopeUuid)],
 );
 
-export const estimateRelations = relations(estimate, ({ many }) => ({
-    scopes: many(scope),
+export const estimateRelations = relations(estimates, ({ many }) => ({
+    scopes: many(scopes),
 }));
 
-export const scopeRelations = relations(scope, ({ one, many }) => ({
-    estimate: one(estimate, {
-        fields: [scope.estimateUuid],
-        references: [estimate.uuid],
+export const scopeRelations = relations(scopes, ({ one, many }) => ({
+    estimate: one(estimates, {
+        fields: [scopes.estimateUuid],
+        references: [estimates.uuid],
     }),
     items: many(items),
 }));
 
 export const itemsRelations = relations(items, ({ one }) => ({
-    scope: one(scope, {
+    scope: one(scopes, {
         fields: [items.scopeUuid],
-        references: [scope.uuid],
+        references: [scopes.uuid],
     }),
 }));
