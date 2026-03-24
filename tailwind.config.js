@@ -21,6 +21,9 @@ export default {
         "button-hover-bg": "var(--color-button-hover-bg)",
         "button-text": "var(--color-button-text)",
       },
+      text: {
+        xxs: "var(--text-xxs)",
+      },
     },
   },
   plugins: [],

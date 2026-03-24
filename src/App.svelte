@@ -178,7 +178,7 @@
     <title>Cost Estimate Builder</title>
 </svelte:head>
 
-<main class="min-h-screen max-w-screen bg-page">
+<main class="min-h-screen max-w-screen bg-page min-w-80">
     <div class="mx-auto flex max-w-3xl flex-col gap-6 p-6">
         <section class="rounded-xl border border-border bg-surface p-4">
             <div class="flex justify-between">
@@ -276,14 +276,17 @@
                 />
             </div>
 
-            <button
-                onclick={addEntry}
-                class="inline-flex items-center justify-center rounded-md border border-border-button bg-button-bg px-3 py-1.5 text-sm font-medium text-button-text transition
-                hover:bg-button-hover-bg focus:outline-none focus:ring-1 focus:ring-accent
-                disabled:cursor-not-allowed disabled:opacity-60"
-            >
-                {t.add}
-            </button>
+            <div class="flex justify-end">
+                <button
+                    onclick={addEntry}
+                    class="inline-flex items-center justify-center rounded-md border focus:ring-1
+                           border-border-button bg-button-bg py-1.5 px-3 text-sm font-medium
+                           text-button-text transition hover:bg-button-hover-bg focus:outline-none
+                           focus:ring-accent disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                    {t.add}
+                </button>
+            </div>
         </section>
 
         <section class="rounded-xl border border-border bg-surface p-4">

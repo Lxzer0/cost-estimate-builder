@@ -5,13 +5,14 @@
         formatCurrency,
         capitalize,
         type Scope,
-    } from "../utils/totals";
+    } from "@/utils/totals";
     import type {
         SupportedLocale,
         CurrencyCode,
         Translations,
-    } from "../utils/i18n";
-    import { formatUnitLabel } from "../utils/i18n";
+    } from "@/utils/i18n";
+    import { formatUnitLabel } from "@/utils/i18n";
+    import ScopeSectionMobile from "@/components/ScopeSectionMobile.svelte";
 
     export let scope: Scope;
     export let scopeIndex: number;
@@ -30,7 +31,7 @@
         <button
             type="button"
             on:click={() => onRemoveSection(scopeIndex)}
-            class="text-xs text-text-muted hover:text-text-strong"
+            class="text-xs text-text-muted hover:text-text-strong border-x px-1 hover:underline"
         >
             {t.removeScope}
         </button>
@@ -41,7 +42,16 @@
             {t.noItems}
         </div>
     {:else}
-        <div class="mt-4 rounded-md border border-border">
+        <ScopeSectionMobile
+            {scope}
+            {scopeIndex}
+            {locale}
+            {currency}
+            {t}
+            {onRemoveItem}
+        />
+
+        <div class="mt-4 hidden rounded-md border border-border sm:block">
             <table class="w-full text-sm text-text">
                 <thead
                     class="bg-surface-muted text-xs uppercase tracking-wide text-text-muted"
@@ -58,7 +68,7 @@
                 <tbody>
                     {#each scope.items as item, itemIndex (itemIndex)}
                         <tr class="border-b border-border last:border-0">
-                            <td class="px-3 py-2 w-1/2">
+                            <td class="px-3 py-2 w-1/2 wrap-anywhere">
                                 {item.title || t.untitledItem}
                             </td>
                             <td class="px-3 text-right">{item.amount}</td>
@@ -82,7 +92,7 @@
                                     type="button"
                                     on:click={() =>
                                         onRemoveItem(scopeIndex, itemIndex)}
-                                    class="text-xs text-text-muted hover:text-text-strong"
+                                    class="text-xs text-text-muted hover:text-text-strong border-x px-1"
                                 >
                                     {t.remove}
                                 </button>
