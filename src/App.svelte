@@ -22,7 +22,12 @@
     import Input from "@/components/Input.svelte";
     import ScopeSection from "@/components/ScopeSection.svelte";
 
-    let locale = $state<SupportedLocale>("en-US");
+    const savedLocale = localStorage.getItem(
+        "locale",
+    ) as SupportedLocale | null;
+
+    let locale: SupportedLocale = $state(savedLocale ?? "en-US");
+
     let localeOptions = $state<SupportedLocale[]>([
         "en-US",
         "pl-PL",
@@ -88,6 +93,9 @@
     });
 
     $effect(() => saveScopes(scopes));
+    $effect(() => {
+        localStorage.setItem("locale", locale);
+    });
     $effect(() => {
         scopeOptions = scopes
             .map((scope) => scope.name)
